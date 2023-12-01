@@ -13,16 +13,16 @@ export class AdventOfCodeService {
 		for (const inputString of inputStrings) {
 			const inputStringChar = inputString.split('');
 			let numberString = '';
-			for (let i = 0; i < inputStringChar.length; i++) {
-				if (validNumbers.includes(inputStringChar[i])) {
-					numberString = inputStringChar[i];
+			for (const stringChar of inputStringChar) {
+				if (validNumbers.includes(stringChar)) {
+					numberString = stringChar;
 					break;
 				}
 			}
 
-			for (let i = (inputStringChar.length - 1); i >= 0; i--) {
-				if (validNumbers.includes(inputStringChar[i])) {
-					numberString = `${numberString}${inputStringChar[i]}`;
+			for (const stringChar of inputStringChar.reverse()) {
+				if (validNumbers.includes(stringChar)) {
+					numberString = `${numberString}${stringChar}`;
 					break;
 				}
 			}
