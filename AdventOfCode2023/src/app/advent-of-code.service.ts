@@ -36,22 +36,16 @@ export class AdventOfCodeService {
 	public static getDay1Part2Answer(inputStrings: string[]) {
 		const newInputStrings = [];
 		for (let inputString of inputStrings) {
-			const oldInputString = inputString;
-			const newInputString = inputString
-				.replaceAll('one', '1')
-				.replaceAll('two', '2')
-				.replaceAll('three', '3')
-				.replaceAll('four', '4')
-				.replaceAll('five', '5')
-				.replaceAll('six', '6')
-				.replaceAll('seven', '7')
-				.replaceAll('eight', '8')
-				.replaceAll('nine', '9');
-			if (oldInputString !== newInputString) {
-				console.log(`Big fat milk dem: ${oldInputString} => ${newInputString}`);
-			}
-
-			newInputStrings.push(newInputString);
+			newInputStrings.push(inputString
+				.replaceAll('one', 'o1ne')
+				.replaceAll('two', 't2wo')
+				.replaceAll('three', 't3hree')
+				.replaceAll('four', 'f4our')
+				.replaceAll('five', 'f5ive')
+				.replaceAll('six', 's6ix')
+				.replaceAll('seven', 's7even')
+				.replaceAll('eight', 'e8ight')
+				.replaceAll('nine', 'n9ine'));
 		}
 
 		return AdventOfCodeService.getDay1Part1Answer(newInputStrings);
