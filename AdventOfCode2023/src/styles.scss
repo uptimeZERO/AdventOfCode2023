@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+body, html {
+    margin: 0;
+    padding: 0;
+    background-color: #444444;
+    overflow-x: hidden;
+    /* Add any other styles you need */
+}
+
+p {
+    font-family: sans-serif;
+    font-size: 18px;
+    color: #ff0066;
+}

@@ -1,0 +1,41 @@
+.advent-of-code-container {
+    width: 100%;
+    max-width: 100vw;
+    height: auto;
+    background-color: #444444;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .heading-container {
+        padding: 20px;
+        width: 50%;
+        height: 50px;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #222222;
+        box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.5);
+        border: 1px solid #ff0066;
+        margin-bottom: 40px;
+        p {
+            font-size: 24px;
+            font-weight: 600;
+        }
+    }
+    .day-container {
+        padding: 20px;
+        width: 50%;
+        height: auto;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: #222222;
+        box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.5);
+        border: 1px solid #ff0066;
+        margin-bottom: 40px;
+    }
+}
