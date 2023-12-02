@@ -5,7 +5,7 @@
     background-size: 20%;
     position: absolute;
     animation: moveBackground 50s linear infinite;
-    z-index: -1;
+    z-index: 0;
 }
 
 @keyframes moveBackground {
