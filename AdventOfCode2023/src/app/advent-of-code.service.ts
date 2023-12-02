@@ -92,6 +92,36 @@ export class AdventOfCodeService {
 			.reduce((acc, current) => acc + current, 0);
 	}
 
+	public static getDay2Part2Answer(
+		inputStrings: string[]
+	): number {
+		let day2games = AdventOfCodeService.transformDay2Input(inputStrings);
+		const sums: number[] = [];
+		for (const day2game of day2games) {
+			let red = 0;
+			let green = 0;
+			let blue = 0;
+			for (const game of day2game.games) {
+				red = Math.max(game.red, red);
+				green = Math.max(game.green, green);
+				blue = Math.max(game.blue, blue);
+			}
+
+			if (red === 0) {
+				sums.push(green * blue);
+			} else if (green === 0) {
+				sums.push(red * blue);
+			} else if (blue === 0) {
+				sums.push(red * green);
+			} else {
+				sums.push(red * green * blue);
+			}
+		}
+
+		return sums
+			.reduce((acc, current) => acc + current, 0);
+	}
+
 	public static transformDay2Input(inputStrings: string[]): day2Game[] {
 		const day2Games = [];
 		for (const inputString of inputStrings) {

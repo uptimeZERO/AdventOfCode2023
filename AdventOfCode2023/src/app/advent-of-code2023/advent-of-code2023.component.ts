@@ -13,7 +13,7 @@ export class AdventOfCode2023Component implements OnInit {
 	public day1Part2Answer: number;
 
 	public day2Part1Answer: number;
-	// public day2Part2Answer: number;
+	public day2Part2Answer: number;
 
 	constructor() {
 		this.day1Part1Answer = AdventOfCodeService.getDay1Part1Answer(day1input);
@@ -22,6 +22,8 @@ export class AdventOfCode2023Component implements OnInit {
 		this.day2Part1Answer = AdventOfCodeService.getDay2Part1Answer(
 			day2input,
 			{red: 12, green: 13, blue: 14});
+
+		this.day2Part2Answer = AdventOfCodeService.getDay2Part2Answer(day2input);
 	}
 
 	ngOnInit(): void {
