@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AdventOfCodeService } from '../advent-of-code.service';
 import { day1Input } from './day1-input';
 import { day2Input } from './day2-input';
+import { day3Input } from './day3-input';
 
 @Component({
 	selector: 'app-advent-of-code2023',
@@ -15,6 +16,9 @@ export class AdventOfCode2023Component implements OnInit {
 	public day2Part1Answer: number;
 	public day2Part2Answer: number;
 
+	public day3Part1Answer: number;
+	// public day3Part2Answer: number;
+
 	constructor() {
 		this.day1Part1Answer = AdventOfCodeService.getDay1Part1Answer(day1Input);
 		this.day1Part2Answer = AdventOfCodeService.getDay1Part2Answer(day1Input);
@@ -24,6 +28,8 @@ export class AdventOfCode2023Component implements OnInit {
 			{red: 12, green: 13, blue: 14});
 
 		this.day2Part2Answer = AdventOfCodeService.getDay2Part2Answer(day2Input);
+		
+		this.day3Part1Answer = AdventOfCodeService.getDay3Part1Answer(day3Input);
 	}
 
 	ngOnInit(): void {

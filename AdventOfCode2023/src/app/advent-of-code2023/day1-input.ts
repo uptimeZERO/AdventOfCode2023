@@ -1,4 +1,4 @@
-export const day1Input = [
+export const day1Input: string[] = [
     "ninefourone1",
     "53sevenvvqm",
     "kscpjfdxp895foureightckjjl1",
