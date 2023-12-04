@@ -310,7 +310,6 @@ export class AdventOfCodeService {
 
 	public static getDay4Part2Answer(inputStrings: string[]): number {
 		const day4Cards = AdventOfCodeService.transformDay4Input(inputStrings);
-		let sum = 0;
 		for (let i = 0; i < day4Cards.length; i++) {
 			const day4Card = day4Cards[i];
 			for (let j = 0; j < day4Card.copies; j++) {
