@@ -29,6 +29,7 @@ export interface Day3GridPoint {
 export interface Day4Card {
 	winningNumbers: number[];
 	cardNumbers: number[];
+	copies: number;
 }
 
 @Injectable({
@@ -307,6 +308,28 @@ export class AdventOfCodeService {
 		return sum;
 	}
 
+	public static getDay4Part2Answer(inputStrings: string[]): number {
+		const day4Cards = AdventOfCodeService.transformDay4Input(inputStrings);
+		let sum = 0;
+		for (let i = 0; i < day4Cards.length; i++) {
+			const day4Card = day4Cards[i];
+			for (let j = 0; j < day4Card.copies; j++) {
+				let matches = day4Card.cardNumbers
+					.filter(x => day4Card.winningNumbers.includes(x))
+					.length;
+				for (let k = 1; k < (matches + 1); k++) {
+					if (i + k < day4Cards.length) {
+						day4Cards[i + k].copies++;
+					}
+				}
+			}
+		}
+
+		return day4Cards
+			.map(x => x.copies)
+			.reduce((acc, current) => acc + current, 0);;
+	}
+
 	public static transformDay4Input(inputStrings: string[]): Day4Card[] {
 		return inputStrings.map(x => {
 			return {
@@ -323,7 +346,8 @@ export class AdventOfCodeService {
 					.split(': ')[1]
 					.split(' | ')[1]
 					.split(' ')
-					.map(y => Number(y))
+					.map(y => Number(y)),
+				copies: 1
 			}
 		});
 	}

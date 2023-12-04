@@ -21,7 +21,7 @@ export class AdventOfCode2023Component implements OnInit {
 	// public day3Part2Answer: number;
 
 	public day4Part1Answer: number;
-	// public day4Part2Answer: number;
+	public day4Part2Answer: number;
 
 	constructor() {
 		this.day1Part1Answer = AdventOfCodeService.getDay1Part1Answer(day1Input);
@@ -37,7 +37,7 @@ export class AdventOfCode2023Component implements OnInit {
 		// this.day3Part2Answer = AdventOfCodeService.getDay3Part2Answer(day3Input);
 
 		this.day4Part1Answer = AdventOfCodeService.getDay4Part1Answer(day4Input);
-		// this.day3Part2Answer = AdventOfCodeService.getDay3Part2Answer(day3Input);
+		this.day4Part2Answer = AdventOfCodeService.getDay4Part2Answer(day4Input);
 	}
 
 	ngOnInit(): void {
