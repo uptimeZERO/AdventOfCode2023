@@ -1,15 +1,35 @@
 import { Injectable } from '@angular/core';
 
-export interface day2Game {
+export interface Day2Game {
 	id: number;
-	games: day2ColourCombination[];
+	games: Day2ColourCombination[];
 };
 
-export interface day2ColourCombination {
+export interface Day2ColourCombination {
 	red: number;
 	green: number;
 	blue: number;
 };
+
+export interface Day3Grid {
+	gridPoints: Day3GridPoint[];
+};
+
+export interface Day3GridPoint {
+	x: number;
+	y: number;
+	value: string;
+	isNumber: boolean;
+	isFirstRow: boolean;
+	isLastRow: boolean;
+	isStartOfRow: boolean;
+	isEndOfRow: boolean;
+}
+
+export interface Day4Card {
+	winningNumbers: number[];
+	cardNumbers: number[];
+}
 
 @Injectable({
 	providedIn: 'root'
@@ -68,10 +88,10 @@ export class AdventOfCodeService {
 
 	public static getDay2Part1Answer(
 		inputStrings: string[],
-		combination: day2ColourCombination
+		combination: Day2ColourCombination
 	): number {
 		let day2games = AdventOfCodeService.transformDay2Input(inputStrings);
-		const validGames: day2Game[] = [];
+		const validGames: Day2Game[] = [];
 		for (const day2game of day2games) {
 			let valid = true;
 			for (const game of day2game.games) {
@@ -122,17 +142,17 @@ export class AdventOfCodeService {
 			.reduce((acc, current) => acc + current, 0);
 	}
 
-	public static transformDay2Input(inputStrings: string[]): day2Game[] {
+	public static transformDay2Input(inputStrings: string[]): Day2Game[] {
 		const day2Games = [];
 		for (const inputString of inputStrings) {
-			const day2Game: day2Game = {
+			const day2Game: Day2Game = {
 				id: Number(inputString.split(':')[0].replace('Game ', '')),
 				games: []
 			}
 
 			const gameStrings = inputString.split(': ')[1].split('; ');
 			for (const gameString of gameStrings) {
-				const game: day2ColourCombination = {
+				const game: Day2ColourCombination = {
 					red: 0,
 					green: 0,
 					blue: 0
@@ -265,5 +285,46 @@ export class AdventOfCodeService {
 		}
 
 		return sum;
+	}
+
+	public static getDay4Part1Answer(inputStrings: string[]): number {
+		const day4Cards = AdventOfCodeService.transformDay4Input(inputStrings);
+		let sum = 0;
+		for (const day4Card of day4Cards) {
+			let matches = day4Card.cardNumbers
+				.filter(x => day4Card.winningNumbers.includes(x))
+				.length;
+			let points = matches > 0 ? 1 : 0;
+			if (matches > 1) {
+				for (let i = 0; i < (matches - 1); i++) {
+					points = points * 2;
+				}
+			}
+
+			sum += points;
+		}
+
+		return sum;
+	}
+
+	public static transformDay4Input(inputStrings: string[]): Day4Card[] {
+		return inputStrings.map(x => {
+			return {
+				winningNumbers: x
+					.replaceAll('   ', ' ')
+					.replaceAll('  ',  ' ')
+					.split(': ')[1]
+					.split(' | ')[0]
+					.split(' ')
+					.map(y => Number(y)),
+				cardNumbers: x
+					.replaceAll('   ', ' ')
+					.replaceAll('  ',  ' ')
+					.split(': ')[1]
+					.split(' | ')[1]
+					.split(' ')
+					.map(y => Number(y))
+			}
+		});
 	}
 }
