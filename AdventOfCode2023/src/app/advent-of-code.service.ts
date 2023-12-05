@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { day5FertilizerToWaterMap, day5HumidityToLocationMap, day5LightToTemperatureMap, day5SeedToSoilMap, day5Seeds, day5SoilToFertilizerMap, day5TemperatureToHumidityMap, day5WaterToLightMap } from './advent-of-code2023/day5-inputs';
 
 export interface Day2Game {
 	id: number;
@@ -329,8 +330,39 @@ export class AdventOfCodeService {
 			.reduce((acc, current) => acc + current, 0);
 	}
 
-	public static getDay5Part1Answer(inputStrings: string[]): number {
-		
+	public static getDay5Part1Answer(): number {
+		const numbers1 = AdventOfCodeService.getNextMap(day5Seeds, day5SeedToSoilMap);
+		const numbers2 = AdventOfCodeService.getNextMap(numbers1, day5SoilToFertilizerMap);
+		const numbers3 = AdventOfCodeService.getNextMap(numbers2, day5FertilizerToWaterMap);
+		const numbers4 = AdventOfCodeService.getNextMap(numbers3, day5WaterToLightMap);
+		const numbers5 = AdventOfCodeService.getNextMap(numbers4, day5LightToTemperatureMap);
+		const numbers6 = AdventOfCodeService.getNextMap(numbers5, day5TemperatureToHumidityMap);
+		const numbers7 = AdventOfCodeService.getNextMap(numbers6, day5HumidityToLocationMap);
+		return Math.min(...numbers7);
+	}
+
+	public static getNextMap(source: number[], map: number[][]): number[] {
+		const output: number[] = [];
+		for (let i = 0; i < source.length; i++) {
+			const sourceNum = source[i]
+			let tempOutput;
+			for (let j = 0; j < map.length; j++) {
+				const mapItem = map[j];
+				if (sourceNum >= mapItem[1] &&
+					sourceNum <= (mapItem[1] + (mapItem[2] - 1))) {
+					tempOutput = mapItem[0] + (sourceNum - mapItem[1]);
+					break;
+				}
+			}
+
+			if (!tempOutput) {
+				tempOutput = sourceNum;
+			}
+
+			output.push(tempOutput);
+		}
+
+		return output;
 	}
 
 	public static transformDay4Input(inputStrings: string[]): Day4Card[] {
