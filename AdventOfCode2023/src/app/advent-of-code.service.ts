@@ -341,6 +341,36 @@ export class AdventOfCodeService {
 		return Math.min(...numbers7);
 	}
 
+	public static getDay5Part2Answer(): number {
+		const startTime = Date.now();
+		let smallestLocation = 999999999;
+		for (let i = 0; i < day5Seeds.length; i += 2) {
+			const start = day5Seeds[i];
+			const length = day5Seeds[i + 1];
+			for (let j = start; j < start + length; j++) {
+				const numbers1 = AdventOfCodeService.getNextMap([j], day5SeedToSoilMap);
+				const numbers2 = AdventOfCodeService.getNextMap(numbers1, day5SoilToFertilizerMap);
+				const numbers3 = AdventOfCodeService.getNextMap(numbers2, day5FertilizerToWaterMap);
+				const numbers4 = AdventOfCodeService.getNextMap(numbers3, day5WaterToLightMap);
+				const numbers5 = AdventOfCodeService.getNextMap(numbers4, day5LightToTemperatureMap);
+				const numbers6 = AdventOfCodeService.getNextMap(numbers5, day5TemperatureToHumidityMap);
+				const numbers7 = AdventOfCodeService.getNextMap(numbers6, day5HumidityToLocationMap);
+				numbers7.push(smallestLocation);
+				smallestLocation = Math.min(...numbers7);
+			}
+		}
+
+		const endTime = Date.now();
+
+		const duration = endTime - startTime;
+		const minutes = Math.floor(duration / 60000);
+		const seconds = Math.floor((duration % 60000) / 1000);
+
+		console.log(`Total processing time: ${minutes} minutes and ${seconds} seconds`);
+
+		return smallestLocation;
+	}
+
 	public static getNextMap(source: number[], map: number[][]): number[] {
 		const output: number[] = [];
 		for (let i = 0; i < source.length; i++) {
