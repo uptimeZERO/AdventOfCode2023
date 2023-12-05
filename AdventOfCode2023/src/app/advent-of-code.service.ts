@@ -326,7 +326,11 @@ export class AdventOfCodeService {
 
 		return day4Cards
 			.map(x => x.copies)
-			.reduce((acc, current) => acc + current, 0);;
+			.reduce((acc, current) => acc + current, 0);
+	}
+
+	public static getDay5Part1Answer(inputStrings: string[]): number {
+		
 	}
 
 	public static transformDay4Input(inputStrings: string[]): Day4Card[] {
