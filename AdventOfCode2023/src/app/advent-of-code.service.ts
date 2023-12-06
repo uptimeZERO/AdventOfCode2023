@@ -374,7 +374,7 @@ export class AdventOfCodeService {
 
 	public static getDay6Part1Answer() {
 		let waysToWinList = [];
-		for (let i = 0; i < 5; i++) {
+		for (let i = 0; i < day6Input.time.length; i++) {
 			const waysToWin = AdventOfCodeService.day6CalculateWaysToWin(day6Input.time[i], day6Input.distance[i]);
 			if (waysToWin > 0) {
 				waysToWinList.push(waysToWin);
@@ -382,6 +382,13 @@ export class AdventOfCodeService {
 		}
 
 		return waysToWinList.reduce((acc, current) => acc * current, 1);;
+	}
+
+	public static getDay6Part2Answer() {
+		return AdventOfCodeService.day6CalculateWaysToWin(
+			Number(`${day6Input.time[0]}${day6Input.time[1]}${day6Input.time[2]}${day6Input.time[3]}`),
+			Number(`${day6Input.distance[0]}${day6Input.distance[1]}${day6Input.distance[2]}${day6Input.distance[3]}`)
+		);
 	}
 
 	public static day6CalculateWaysToWin(time: number, distance: number): number {

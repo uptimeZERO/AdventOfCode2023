@@ -46,7 +46,7 @@ export class AdventOfCode2023Component implements OnInit {
 		this.day4Part2Answer = AdventOfCodeService.getDay4Part2Answer(day4Input);
 
 		this.day6Part1Answer = AdventOfCodeService.getDay6Part1Answer();
-		// this.day6Part2Answer = AdventOfCodeService.getDay6Part2Answer(day4Input);
+		this.day6Part2Answer = AdventOfCodeService.getDay6Part2Answer();
 	}
 
 	ngOnInit(): void {
