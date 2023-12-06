@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { day5FertilizerToWaterMap, day5HumidityToLocationMap, day5LightToTemperatureMap, day5SeedToSoilMap, day5Seeds, day5SoilToFertilizerMap, day5TemperatureToHumidityMap, day5WaterToLightMap } from './advent-of-code2023/day5-inputs';
+import { day6ExampleInput, day6Input } from './advent-of-code2023/day6-input';
 
 export interface Day2Game {
 	id: number;
@@ -369,6 +370,29 @@ export class AdventOfCodeService {
 		console.log(`Total processing time: ${minutes} minutes and ${seconds} seconds`);
 
 		return smallestLocation;
+	}
+
+	public static getDay6Part1Answer() {
+		let waysToWinList = [];
+		for (let i = 0; i < 5; i++) {
+			const waysToWin = AdventOfCodeService.day6CalculateWaysToWin(day6Input.time[i], day6Input.distance[i]);
+			if (waysToWin > 0) {
+				waysToWinList.push(waysToWin);
+			}
+		}
+
+		return waysToWinList.reduce((acc, current) => acc * current, 1);;
+	}
+
+	public static day6CalculateWaysToWin(time: number, distance: number): number {
+		let waysToWin = 0;
+		for (let i = 1; i < (time + 1); i++) {
+			if ((time - i) * i > distance) {
+				waysToWin++;
+			}
+		}
+
+		return waysToWin;
 	}
 
 	public static getNextMap(source: number[], map: number[][]): number[] {
