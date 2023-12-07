@@ -1,9 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { AdventOfCodeService } from '../advent-of-code.service';
-import { day1Input } from './day1-input';
-import { day2Input } from './day2-input';
-import { day3Input } from './day3-input';
-import { day4Input } from './day4-input';
+import { day1Input } from '../inputs/day1-input';
+import { day2Input } from '../inputs/day2-input';
+import { day3Input } from '../inputs/day3-input';
+import { day4Input } from '../inputs/day4-input';
+import { AocDay1Service } from '../services/day1/aoc-day1.service';
+import { AocDay2Service } from '../services/day2/aoc-day2.service';
+import { AocDay3Service } from '../services/day3/aoc-day3.service';
+import { AocDay4Service } from '../services/day4/aoc-day4.service';
+import { AocDay5Service } from '../services/day5/aoc-day5.service';
+import { AocDay6Service } from '../services/day6/aoc-day6.service';
+import { AocDay7Service } from '../services/day7/aoc-day7.service';
 
 @Component({
 	selector: 'app-advent-of-code2023',
@@ -29,24 +35,32 @@ export class AdventOfCode2023Component implements OnInit {
 	public day6Part1Answer: number = 0;
 	public day6Part2Answer: number = 0;
 
-	constructor() {
-		this.day1Part1Answer = AdventOfCodeService.getDay1Part1Answer(day1Input);
-		this.day1Part2Answer = AdventOfCodeService.getDay1Part2Answer(day1Input);
+	constructor(
+		private aocDay1Service: AocDay1Service,
+		private aocDay2Service: AocDay2Service,
+		private aocDay3Service: AocDay3Service,
+		private aocDay4Service: AocDay4Service,
+		private aocDay5Service: AocDay5Service,
+		private aocDay6Service: AocDay6Service,
+		private aocDay7Service: AocDay7Service,
+	) {
+		this.day1Part1Answer = this.aocDay1Service.getPart1Answer(day1Input);
+		this.day1Part2Answer = this.aocDay1Service.getPart2Answer(day1Input);
 
-		this.day2Part1Answer = AdventOfCodeService.getDay2Part1Answer(
+		this.day2Part1Answer = this.aocDay2Service.getPart1Answer(
 			day2Input,
 			{red: 12, green: 13, blue: 14});
 
-		this.day2Part2Answer = AdventOfCodeService.getDay2Part2Answer(day2Input);
+		this.day2Part2Answer = this.aocDay2Service.getPart2Answer(day2Input);
 		
-		this.day3Part1Answer = AdventOfCodeService.getDay3Part1Answer(day3Input);
-		// this.day3Part2Answer = AdventOfCodeService.getDay3Part2Answer(day3Input);
+		this.day3Part1Answer = this.aocDay3Service.getPart1Answer(day3Input);
+		// this.day3Part2Answer = this.aocDay3Service.getPart2Answer(day3Input);
 
-		this.day4Part1Answer = AdventOfCodeService.getDay4Part1Answer(day4Input);
-		this.day4Part2Answer = AdventOfCodeService.getDay4Part2Answer(day4Input);
+		this.day4Part1Answer = this.aocDay4Service.getPart1Answer(day4Input);
+		this.day4Part2Answer = this.aocDay4Service.getPart2Answer(day4Input);
 
-		this.day6Part1Answer = AdventOfCodeService.getDay6Part1Answer();
-		this.day6Part2Answer = AdventOfCodeService.getDay6Part2Answer();
+		this.day6Part1Answer = this.aocDay6Service.getPart1Answer();
+		this.day6Part2Answer = this.aocDay6Service.getPart2Answer();
 	}
 
 	ngOnInit(): void {
@@ -54,7 +68,7 @@ export class AdventOfCode2023Component implements OnInit {
 	}
 
 	public getDay5() {
-		this.day5Part1Answer = AdventOfCodeService.getDay5Part1Answer();
-		this.day5Part2Answer = AdventOfCodeService.getDay5Part2Answer();
+		this.day5Part1Answer = this.aocDay5Service.getPart1Answer();
+		this.day5Part2Answer = this.aocDay5Service.getPart2Answer();
 	}
 }
