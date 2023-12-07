@@ -28,7 +28,7 @@ export class AocDay7Service {
 	constructor() { }
 
 	public getPart1Answer(): number {
-		const day7Hands = this.transformDay7Input(day7Input);
+		const day7Hands = this.transformDay7InputForPart1(day7Input);
 		day7Hands
 			.sort((a, b) => 
 				a.type - b.type || 
@@ -39,10 +39,17 @@ export class AocDay7Service {
 	}
 
 	public getPart2Answer(): number {
-		return 0;
+		const day7Hands = this.transformDay7InputForPart2(day7Input);
+		day7Hands
+			.sort((a, b) => 
+				a.type - b.type || 
+				(a.handValue.find((item, index) => item !== b.handValue[index]) ?? a.handValue[0]) - (b.handValue[a.handValue.findIndex((item, index) => item !== b.handValue[index])] ?? b.handValue[0]))
+		day7Hands.forEach(x => x.rank = (day7Hands.indexOf(x) + 1))
+		day7Hands.forEach(x => x.winnings = x.rank * x.bid);
+		return day7Hands.reduce((acc, item) => acc + item.winnings, 0);
 	}
 
-	private transformDay7Input(inputStrings: string[]): Day7Hand[] {
+	private transformDay7InputForPart1(inputStrings: string[]): Day7Hand[] {
 		return inputStrings.map(x => {
 			return {
 				hand: x.split(' ')[0],
@@ -50,12 +57,25 @@ export class AocDay7Service {
 				rank: 0,
 				bid: +x.split(' ')[1],
 				winnings: 0,
-				type: this.getDay7HandType(x.split(' ')[0])
+				type: this.getDay7HandTypeForPart1(x.split(' ')[0])
 			}
 		});
 	}
 
-	private getDay7HandType(hand: string): Day7HandType {
+	private transformDay7InputForPart2(inputStrings: string[]): Day7Hand[] {
+		return inputStrings.map(x => {
+			return {
+				hand: x.split(' ')[0],
+				handValue: this.getHandValue(x.split(' ')[0]),
+				rank: 0,
+				bid: +x.split(' ')[1],
+				winnings: 0,
+				type: this.getDay7HandTypeForPart2(x.split(' ')[0])
+			}
+		});
+	}
+
+	private getDay7HandTypeForPart1(hand: string): Day7HandType {
 		const handCards = hand.split('');
 		const occurrenceMap = this.mapOccurrences(handCards);
 		if (occurrenceMap.some(x => x.repeatOccurrences === 5)) {
@@ -86,17 +106,107 @@ export class AocDay7Service {
 		return Day7HandType.HighCard;
 	}
 
+	private getDay7HandTypeForPart2(hand: string): Day7HandType {
+		const handCards = hand.split('');
+		const occurrenceMap = this.mapOccurrences(handCards);
+		if (occurrenceMap.some(x => x.repeatOccurrences === 5)) {
+			return Day7HandType.FiveOfAKind;
+		}
+
+		if (occurrenceMap.some(x => x.repeatOccurrences === 4)) {
+			if (occurrenceMap.find(x => x = {card: 'J', repeatOccurrences: 1})) {
+				const replacementCard = occurrenceMap.find(x => x.repeatOccurrences === 4)?.card ?? 'J';
+				this.getDay7HandTypeForPart2(hand.replace('J', replacementCard));
+			}
+
+			return Day7HandType.FourOfAKind;
+		}
+
+		if (occurrenceMap.some(x => x.repeatOccurrences === 3) &&
+			occurrenceMap.some(x => x.repeatOccurrences === 2)) {
+			const jokerOccurence = occurrenceMap.find(x => x.card === 'J');
+			if (jokerOccurence) {
+				let replacementCard;
+				if (jokerOccurence.repeatOccurrences === 2) {
+					replacementCard = occurrenceMap.find(x => x.repeatOccurrences === 3)?.card ?? 'J';
+				} else {
+					replacementCard = occurrenceMap.find(x => x.repeatOccurrences === 2)?.card ?? 'J';
+				}
+				
+				this.getDay7HandTypeForPart2(hand.replaceAll('J', replacementCard));
+			}
+
+			return Day7HandType.FullHouse;
+		}
+
+		if (occurrenceMap.some(x => x.repeatOccurrences === 3)) {
+			const jokerOccurence = occurrenceMap.find(x => x.card === 'J');
+			if (jokerOccurence) {
+				let replacementCard;
+				if (jokerOccurence.repeatOccurrences === 3) {
+					replacementCard = occurrenceMap.filter(x => x.repeatOccurrences === 1)[0].card;
+				} else {
+					replacementCard = occurrenceMap.find(x => x.repeatOccurrences === 3)?.card ?? 'J';
+				}
+
+				this.getDay7HandTypeForPart2(hand.replaceAll('J', replacementCard));
+			}
+
+			return Day7HandType.ThreeOfAKind;
+		}
+
+		if (occurrenceMap.filter(x => x.repeatOccurrences === 2).length === 2) {
+			const jokerOccurence = occurrenceMap.find(x => x.card === 'J');
+			if (jokerOccurence) {
+				let replacementCard;
+				if (jokerOccurence.repeatOccurrences === 2) {
+					replacementCard = occurrenceMap.find(x => x.repeatOccurrences === 2 && x.card !== 'J')?.card ?? 'J';
+				} else {
+					replacementCard = occurrenceMap.filter(x => x.repeatOccurrences === 2 && x.card !== 'J')[0].card;
+				}
+
+				this.getDay7HandTypeForPart2(hand.replaceAll('J', replacementCard));
+			}
+			return Day7HandType.TwoPair;
+		}
+
+		if (occurrenceMap.some(x => x.repeatOccurrences === 2)) {
+			const jokerOccurence = occurrenceMap.find(x => x.card === 'J');
+			if (jokerOccurence) {
+				let replacementCard;
+				if (jokerOccurence.repeatOccurrences === 2) {
+					replacementCard = occurrenceMap.filter(x => x.card !== 'J')[0].card ?? 'J';
+				} else {
+					replacementCard = occurrenceMap.filter(x => x.repeatOccurrences === 2 && x.card !== 'J')[0].card;
+				}
+
+				this.getDay7HandTypeForPart2(hand.replaceAll('J', replacementCard));
+			}
+
+			return Day7HandType.OnePair;
+		}
+
+		
+		const jokerOccurence = occurrenceMap.find(x => x.card === 'J');
+		if (jokerOccurence) {
+			let replacementCard = occurrenceMap.filter(x => x.card !== 'J')[0].card;
+			this.getDay7HandTypeForPart2(hand.replaceAll('J', replacementCard));
+		}
+
+		return Day7HandType.HighCard;
+	}
+
 	private getHandValue(hand: string): number[] {
 		const handValue = [];
 
 		for (const card of hand.split('')) {
-			handValue.push(this.getCardValue(card));
+			handValue.push(this.getCardValueForPart1(card));
 		}
 
 		return handValue;
 	}
 
-	private getCardValue(card: string): number {
+	private getCardValueForPart1(card: string): number {
 		switch (card) {
 			case '2':
 				return 1;
@@ -124,6 +234,39 @@ export class AocDay7Service {
 				return 12;
 			case 'A':
 				return 13;
+			default:
+				return 0;
+		}
+	}
+
+	private getCardValueForPart2(card: string): number {
+		switch (card) {
+			case 'J':
+				return 0;
+			case '2':
+				return 1;
+			case '3':
+				return 2;
+			case '4':
+				return 3;
+			case '5':
+				return 4;
+			case '6':
+				return 5;
+			case '7':
+				return 6;
+			case '8':
+				return 7;
+			case '9':
+				return 8;
+			case 'T':
+				return 9;
+			case 'Q':
+				return 10;
+			case 'K':
+				return 11;
+			case 'A':
+				return 12;
 			default:
 				return 0;
 		}
