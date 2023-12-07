@@ -53,7 +53,7 @@ export class AocDay7Service {
 		return inputStrings.map(x => {
 			return {
 				hand: x.split(' ')[0],
-				handValue: this.getHandValue(x.split(' ')[0]),
+				handValue: this.getHandValueForPart1(x.split(' ')[0]),
 				rank: 0,
 				bid: +x.split(' ')[1],
 				winnings: 0,
@@ -66,7 +66,7 @@ export class AocDay7Service {
 		return inputStrings.map(x => {
 			return {
 				hand: x.split(' ')[0],
-				handValue: this.getHandValue(x.split(' ')[0]),
+				handValue: this.getHandValueForPart2(x.split(' ')[0]),
 				rank: 0,
 				bid: +x.split(' ')[1],
 				winnings: 0,
@@ -109,98 +109,60 @@ export class AocDay7Service {
 	private getDay7HandTypeForPart2(hand: string): Day7HandType {
 		const handCards = hand.split('');
 		const occurrenceMap = this.mapOccurrences(handCards);
+
 		if (occurrenceMap.some(x => x.repeatOccurrences === 5)) {
 			return Day7HandType.FiveOfAKind;
 		}
 
-		if (occurrenceMap.some(x => x.repeatOccurrences === 4)) {
-			if (occurrenceMap.find(x => x = {card: 'J', repeatOccurrences: 1})) {
-				const replacementCard = occurrenceMap.find(x => x.repeatOccurrences === 4)?.card ?? 'J';
-				this.getDay7HandTypeForPart2(hand.replace('J', replacementCard));
-			}
+		const jokerOccurence = occurrenceMap.find(x => x.card === 'J');
+		if (jokerOccurence) {
+			let replacementCard = occurrenceMap
+				.filter(x => x.card !== 'J')
+				.sort((a, b) => b.repeatOccurrences - a.repeatOccurrences)[0].card;
+			const newHand = hand.replaceAll('J', replacementCard);
+			return this.getDay7HandTypeForPart2(newHand);
+		}
 
+
+		if (occurrenceMap.some(x => x.repeatOccurrences === 4)) {
 			return Day7HandType.FourOfAKind;
 		}
 
 		if (occurrenceMap.some(x => x.repeatOccurrences === 3) &&
 			occurrenceMap.some(x => x.repeatOccurrences === 2)) {
-			const jokerOccurence = occurrenceMap.find(x => x.card === 'J');
-			if (jokerOccurence) {
-				let replacementCard;
-				if (jokerOccurence.repeatOccurrences === 2) {
-					replacementCard = occurrenceMap.find(x => x.repeatOccurrences === 3)?.card ?? 'J';
-				} else {
-					replacementCard = occurrenceMap.find(x => x.repeatOccurrences === 2)?.card ?? 'J';
-				}
-				
-				this.getDay7HandTypeForPart2(hand.replaceAll('J', replacementCard));
-			}
-
 			return Day7HandType.FullHouse;
 		}
 
 		if (occurrenceMap.some(x => x.repeatOccurrences === 3)) {
-			const jokerOccurence = occurrenceMap.find(x => x.card === 'J');
-			if (jokerOccurence) {
-				let replacementCard;
-				if (jokerOccurence.repeatOccurrences === 3) {
-					replacementCard = occurrenceMap.filter(x => x.repeatOccurrences === 1)[0].card;
-				} else {
-					replacementCard = occurrenceMap.find(x => x.repeatOccurrences === 3)?.card ?? 'J';
-				}
-
-				this.getDay7HandTypeForPart2(hand.replaceAll('J', replacementCard));
-			}
-
 			return Day7HandType.ThreeOfAKind;
 		}
 
 		if (occurrenceMap.filter(x => x.repeatOccurrences === 2).length === 2) {
-			const jokerOccurence = occurrenceMap.find(x => x.card === 'J');
-			if (jokerOccurence) {
-				let replacementCard;
-				if (jokerOccurence.repeatOccurrences === 2) {
-					replacementCard = occurrenceMap.find(x => x.repeatOccurrences === 2 && x.card !== 'J')?.card ?? 'J';
-				} else {
-					replacementCard = occurrenceMap.filter(x => x.repeatOccurrences === 2 && x.card !== 'J')[0].card;
-				}
-
-				this.getDay7HandTypeForPart2(hand.replaceAll('J', replacementCard));
-			}
 			return Day7HandType.TwoPair;
 		}
 
 		if (occurrenceMap.some(x => x.repeatOccurrences === 2)) {
-			const jokerOccurence = occurrenceMap.find(x => x.card === 'J');
-			if (jokerOccurence) {
-				let replacementCard;
-				if (jokerOccurence.repeatOccurrences === 2) {
-					replacementCard = occurrenceMap.filter(x => x.card !== 'J')[0].card ?? 'J';
-				} else {
-					replacementCard = occurrenceMap.filter(x => x.repeatOccurrences === 2 && x.card !== 'J')[0].card;
-				}
-
-				this.getDay7HandTypeForPart2(hand.replaceAll('J', replacementCard));
-			}
-
 			return Day7HandType.OnePair;
-		}
-
-		
-		const jokerOccurence = occurrenceMap.find(x => x.card === 'J');
-		if (jokerOccurence) {
-			let replacementCard = occurrenceMap.filter(x => x.card !== 'J')[0].card;
-			this.getDay7HandTypeForPart2(hand.replaceAll('J', replacementCard));
 		}
 
 		return Day7HandType.HighCard;
 	}
 
-	private getHandValue(hand: string): number[] {
+	private getHandValueForPart1(hand: string): number[] {
 		const handValue = [];
 
 		for (const card of hand.split('')) {
 			handValue.push(this.getCardValueForPart1(card));
+		}
+
+		return handValue;
+	}
+
+	private getHandValueForPart2(hand: string): number[] {
+		const handValue = [];
+
+		for (const card of hand.split('')) {
+			handValue.push(this.getCardValueForPart2(card));
 		}
 
 		return handValue;
