@@ -27,29 +27,37 @@
             font-weight: 600;
         }
     }
-    .day-container {
-        padding: 20px;
-        width: 50%;
-        height: auto;
-        border-radius: 10px;
+    .day-list-container {
+        width: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        background-color: #222222;
-        box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.5);
-        border: 1px solid #ff0066;
-        margin-bottom: 40px;
-        .day-heading {
-            width: 100%;
-            text-align: center;
-            font-size: 22px;
-            margin: 0;
-        }
-        .day-message {
-
-        }
-        .day-button {
-            
+        align-items: center;
+        max-height: calc(100vh - 172px);
+        overflow: auto;
+        .day-container {
+            padding: 20px;
+            width: 50%;
+            height: auto;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: #222222;
+            box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.5);
+            border: 1px solid #ff0066;
+            margin-bottom: 40px;
+            .day-heading {
+                width: 100%;
+                text-align: center;
+                font-size: 22px;
+                margin: 0;
+            }
+            .day-message {
+    
+            }
+            .day-button {
+                
+            }
         }
     }
 }
